@@ -47,7 +47,7 @@ namespace Cartelera
 
             // Conect to Database
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DocumentManagementConnection")));
 
             // Specifiying we are going to use Identity Framework
             services.AddIdentity<IdentityUser, IdentityRole>(options => 
@@ -66,42 +66,42 @@ namespace Cartelera
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders() ;
 
             // Configure strongly typed settings objects
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
+            // var appSettingsSection = Configuration.GetSection("AppSettings");
+            // services.Configure<AppSettings>(appSettingsSection);
 
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            // var appSettings = appSettingsSection.Get<AppSettings>();
+            // var key = Encoding.ASCII.GetBytes(appSettings.Secret);
          
 
             // Authentication Middleware
-            services.AddAuthentication(o => 
-            {
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            // services.AddAuthentication(o => 
+            // {
+            //     o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //     o.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            //     o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = appSettings.Site,
-                    ValidAudience = appSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
+            // }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            // {
+            //     options.TokenValidationParameters = new TokenValidationParameters
+            //     {
+            //         ValidateIssuerSigningKey = true,
+            //         ValidateIssuer = true,
+            //         ValidateAudience = true,
+            //         ValidIssuer = appSettings.Site,
+            //         ValidAudience = appSettings.Audience,
+            //         IssuerSigningKey = new SymmetricSecurityKey(key)
                     
 
-                };
-             });
+            //     };
+            //  });
 
 
-            services.AddAuthorization(options => 
-            {
-                options.AddPolicy("RequireLoggedIn", policy => policy.RequireRole("Admin", "Customer", "Moderator").RequireAuthenticatedUser());
+            // services.AddAuthorization(options => 
+            // {
+            //     options.AddPolicy("RequireLoggedIn", policy => policy.RequireRole("Admin", "Customer", "Moderator").RequireAuthenticatedUser());
 
-                options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin").RequireAuthenticatedUser());
-             });
+            //     options.AddPolicy("RequireAdministratorRole", policy => policy.RequireRole("Admin").RequireAuthenticatedUser());
+            //  });
 
             /*
             Requirement: 
@@ -134,12 +134,12 @@ namespace Cartelera
             app.UseSpaStaticFiles();
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-            });
+            // app.UseMvc(routes =>
+            // {
+            //     routes.MapRoute(
+            //         name: "default",
+            //         template: "{controller}/{action=Index}/{id?}");
+            // });
 
             app.UseSpa(spa =>
             {
