@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Cartelera.Controllers.Api
 {
-    [Route("api/[controller]")]
+    [Route("api/cuenta")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -73,7 +73,8 @@ namespace Cartelera.Controllers.Api
 
 
         // Login Method
-        [HttpPost("action")]
+        [HttpPost]
+        [Route("Login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel formdata)
         {
             // Get the User from Database
